@@ -2,6 +2,7 @@ import * as process from "process";
 import * as path from "path";
 import {
 	readJsonFile,
+	removeFile,
 	replaceInFile,
 	writeJsonFile,
 } from "./utils/file-helpers.mjs";
@@ -47,6 +48,13 @@ async function main() {
 		pkg.name = `obsidian-${pluginID}`;
 		invariant("description" in pkg, "Missing description in package.json");
 		pkg.description = pluginDescription;
+		invariant(
+			"scripts" in pkg && pkg.scripts && typeof pkg.scripts === "object",
+			"Missing scripts in package.json"
+		);
+		if ("setup" in pkg.scripts) {
+			delete pkg.scripts.setup;
+		}
 		await writeJsonFile("package.json", pkg);
 
 		await replaceInFile(
@@ -63,6 +71,7 @@ async function main() {
 			pluginDescription
 		);
 
+		await removeFile("scripts/setup.mts");
 		process.stdin.pause();
 	} catch (error) {
 		console.log("There's an error!");

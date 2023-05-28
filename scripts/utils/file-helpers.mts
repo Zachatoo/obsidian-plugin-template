@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, writeFile, rm } from "fs/promises";
 import * as path from "path";
 
 export async function replaceInFile(
@@ -24,4 +24,8 @@ export async function writeJsonFile(relativePath: string, data: object) {
 		JSON.stringify(data, null, "\t") + "\n",
 		"utf-8"
 	);
+}
+
+export async function removeFile(relativePath: string) {
+	await rm(path.join(process.cwd(), relativePath));
 }
