@@ -52,7 +52,7 @@ async function readJsonFile(relativePath: string): Promise<unknown> {
 async function writeJsonFile(relativePath: string, data: object) {
 	await writeFile(
 		path.join(process.cwd(), relativePath),
-		JSON.stringify(data, null, 2) + "\n",
+		JSON.stringify(data, null, "\t") + "\n",
 		"utf-8"
 	);
 }
