@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-plugin-template",
 	"version": "0.0.1",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "A description for the plugin.",
 	"main": "main.js",
 	"scripts": {
 		"setup": "npx ts-node --esm scripts/setup.mts",

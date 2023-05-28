@@ -64,6 +64,12 @@ async function main() {
 		const pluginClassName = `${dashCaseToPascalCase(pluginID)}Plugin`;
 		const pluginName = `${dashCaseToTitleCase(pluginID)} Plugin`;
 
+		const pluginDescription = await prompt("Plugin description: ");
+		invariant(
+			typeof pluginDescription === "string",
+			"Invalid plugin description provided."
+		);
+
 		const manifest = await readJsonFile("manifest.json");
 		invariant(
 			manifest && typeof manifest === "object",
@@ -77,14 +83,29 @@ async function main() {
 			"description" in manifest,
 			"Missing description in manifest.json"
 		);
-		const description = await prompt("Plugin description: ");
-		manifest.description = description;
+		manifest.description = pluginDescription;
 		await writeJsonFile("manifest.json", manifest);
+
+		const pkg = await readJsonFile("package.json");
+		invariant(pkg && typeof pkg === "object", "Missing package.json");
+		invariant("name" in pkg, "Missing name in package.json");
+		pkg.name = `obsidian-${pluginID}`;
+		invariant("description" in pkg, "Missing description in package.json");
+		pkg.description = pluginDescription;
+		await writeJsonFile("package.json", pkg);
 
 		await replaceInFile(
 			path.join("src", "main.ts"),
 			/MyPlugin/g,
 			pluginClassName
+		);
+
+		await replaceInFile("README.md", /\{\{ pluginID \}\}/g, pluginID);
+		await replaceInFile("README.md", /\{\{ pluginName \}\}/g, pluginName);
+		await replaceInFile(
+			"README.md",
+			/\{\{ pluginDescription \}\}/g,
+			pluginDescription
 		);
 
 		process.stdin.pause();
