@@ -28,6 +28,12 @@ async function main() {
 	const typedVersions = versions as { [key: string]: string };
 	typedVersions[targetVersion] = minAppVersion;
 	await writeJsonFile("versions.json", typedVersions);
+
+	const pkgLock = await readJsonFile("package-lock.json");
+	invariant(pkgLock && typeof pkgLock === "object", "Missing package.json");
+	invariant("version" in pkgLock, "Missing version in package.json");
+	pkgLock.version = targetVersion;
+	await writeJsonFile("package-lock.json", pkgLock);
 }
 
 main();
