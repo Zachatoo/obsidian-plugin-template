@@ -16,10 +16,13 @@ import {
 async function main() {
 	try {
 		const [repoName] = process.cwd().split("/").slice(-1);
+		invariant(
+			repoName.startsWith("obsidian-"),
+			'Expected folder to start with prefix "obsidian-"'
+		);
 		const pluginID = repoName.split("-").slice(1).join("-");
 		const pluginClassName = `${dashCaseToPascalCase(pluginID)}Plugin`;
 		const pluginName = `${dashCaseToTitleCase(pluginID)} Plugin`;
-
 		const pluginDescription = await prompt("Plugin description: ");
 		invariant(
 			typeof pluginDescription === "string",
