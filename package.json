@@ -4,10 +4,10 @@
 	"description": "A description for the plugin.",
 	"main": "main.js",
 	"scripts": {
-		"setup": "npx ts-node --esm scripts/setup.mts",
+		"setup": "npx ts-node --esm external/obsidian-plugin-scripts/setup.mts",
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "npx ts-node --esm scripts/version-bump.mts && git add package.json package-lock.json manifest.json versions.json"
+		"version": "npx ts-node --esm external/obsidian-plugin-scripts/version-bump.mts && git add package.json package-lock.json manifest.json versions.json"
 	},
 	"keywords": [
 		"obsidian-plugin",
